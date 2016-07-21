@@ -1189,14 +1189,16 @@ window.Zepto = Zepto, void 0 === window.$ && (window.$ = Zepto),
         v = 0;
       "MSGesture" in window && (a = new MSGesture, a.target = document.body), t(document).bind("MSGestureEnd", function(t) {
         var n = t.velocityX > 1 ? "Right" : t.velocityX < -1 ? "Left" : t.velocityY > 1 ? "Down" : t.velocityY < -1 ? "Up" : null;
-        n && (e.el.trigger("swipe"), e.el.trigger("swipe" + n))
+        n && e.el && e.el.trigger && (e.el.trigger("swipe"), e.el.trigger("swipe" + n))
       }).on("touchstart MSPointerDown pointerdown", function(i) {
         (!(w = p(i, "down")) || h(i)) && (y = w ? i : i.touches[0], i.touches && 1 === i.touches.length && e.x2 && (e.x2 = void 0, e.y2 = void 0), d = Date.now(), m = d - (e.last || d), e.el = t("tagName" in y.target ? y.target : y.target.parentNode), n && clearTimeout(n), e.x1 = y.pageX, e.y1 = y.pageY, m > 0 && 250 >= m && (e.isDoubleTap = !0), e.last = d, o = setTimeout(f, s), a && w && a.addPointer(i.pointerId))
       }).on("touchmove MSPointerMove pointermove", function(t) {
         (!(w = p(t, "move")) || h(t)) && (y = w ? t : t.touches[0], c(), e.x2 = y.pageX, e.y2 = y.pageY, g += Math.abs(e.x1 - e.x2), v += Math.abs(e.y1 - e.y2))
       }).on("touchend MSPointerUp pointerup", function(o) {
         (!(w = p(o, "up")) || h(o)) && (c(), e.x2 && Math.abs(e.x1 - e.x2) > 30 || e.y2 && Math.abs(e.y1 - e.y2) > 30 ? r = setTimeout(function() {
-          e.el.trigger("swipe"), e.el.trigger("swipe" + u(e.x1, e.x2, e.y1, e.y2)), e = {}
+          if (e.el && e.el.trigger) {
+            e.el.trigger("swipe"), e.el.trigger("swipe" + u(e.x1, e.x2, e.y1, e.y2)), e = {}
+          }
         }, 0) : "last" in e && (30 > g && 30 > v ? i = setTimeout(function() {
           var i = t.Event("tap");
           i.cancelTouch = l, e.el && e.el.trigger(i), e.isDoubleTap ? (e.el && e.el.trigger("doubleTap"), e = {}) : n = setTimeout(function() {
